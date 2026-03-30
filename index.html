@@ -1,72 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Smart Construction Calculator</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #eef2f7;
-            margin: 0;
-            padding: 0;
-        }
+<title>SmartBuild Assistant</title>
 
-        .header {
-            background: #2c3e50;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
+<style>
+body {
+    font-family: Arial;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-align: center;
+}
 
-        .container {
-            max-width: 700px;
-            margin: 30px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-        }
+.container {
+    background: rgba(0,0,0,0.6);
+    padding: 20px;
+    margin: 40px auto;
+    width: 320px;
+    border-radius: 15px;
+}
 
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-        }
+input, select, button {
+    width: 90%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    border: none;
+}
 
-        button {
-            background: #3498db;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+button {
+    background: #00ffcc;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-        .section {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f7f9fc;
-            border-radius: 8px;
-        }
-    </style>
+.tagline {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+.result {
+    margin-top: 15px;
+    background: #222;
+    padding: 10px;
+    border-radius: 10px;
+}
+</style>
 </head>
+
 <body>
 
-<div class="header">
-    <h2>🏗️ Smart Construction Calculator</h2>
-</div>
+<h2>🏗️ SmartBuild Assistant</h2>
+<p class="tagline">Build Smart. Spend Smart.</p>
 
 <div class="container">
 
-    <h3>Project Input</h3>
+<input id="area" placeholder="Area (sq.ft)">
+<input id="floors" placeholder="Floors">
 
-    <input id="area" placeholder="Area (sq.ft)">
-    <input id="floors" placeholder="Number of Floors">
+<select id="district">
+<option>Chennai</option>
+<option>Trichy</option>
+<option>Tanjore</option>
+<option>Coimbatore</option>
+</select>
 
-    <select id="type">
-        <option>Residential</option>
-        <option>Commercial</option>
-    </select>
+<h4>Select Cement Brand</h4>
+<select id="cement">
+<option>UltraTech</option>
+<option>ACC</option>
+<option>Ramco</option>
+</select>
 
-    <button onclick="calculate()">Calculate Plan</button>
+<h4>Select Sand Type</h4>
+<select id="sand">
+<option>Premium</option>
+<option>Standard</option>
+<option>Local</option>
+</select>
 
-    <div id="output"></div>
+<button onclick="calculate()">Calculate</button>
+
+<div id="output" class="result"></div>
 
 </div>
 
@@ -74,46 +89,22 @@
 function calculate() {
     var area = document.getElementById("area").value;
     var floors = document.getElementById("floors").value;
-    var type = document.getElementById("type").value;
+    var district = document.getElementById("district").value;
+    var cement = document.getElementById("cement").value;
+    var sand = document.getElementById("sand").value;
 
     fetch("http://127.0.0.1:5000/calc", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({area, floors, type})
+        body: JSON.stringify({area, floors, district, cement, sand})
     })
     .then(res => res.json())
     .then(data => {
-        document.getElementById("output").innerHTML = `
-        
-        <div class="section">
-        <h3>🧱 Materials</h3>
-        Cement: ${data.cement}<br>
-        Sand: ${data.sand}<br>
-        Aggregate: ${data.aggregate}<br>
-        Steel: ${data.steel}
-        </div>
-
-        <div class="section">
-        <h3>👷 Manpower</h3>
-        Total Workers: ${data.workers}<br>
-        Estimated Days: ${data.days}
-        </div>
-
-        <div class="section">
-        <h3>🚜 Equipment</h3>
-        ${data.equipment}
-        </div>
-
-        <div class="section">
-        <h3>💰 Cost Estimate</h3>
-        ₹${data.cost}
-        </div>
-
-        <div class="section">
-        <h3>⚡ Smart Insight</h3>
-        ${data.insight}
-        </div>
-        `;
+        document.getElementById("output").innerHTML =
+            "Cement Required: " + data.cement_qty + "<br>" +
+            "Sand Required: " + data.sand_qty + "<br>" +
+            "Total Cost: ₹" + data.total_cost + "<br><br>" +
+            "💡 Suggestion: " + data.suggestion;
     });
 }
 </script>

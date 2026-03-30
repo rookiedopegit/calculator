@@ -10,50 +10,60 @@ def calc():
 
     area = float(data['area'])
     floors = int(data['floors'])
-    btype = data['type']
+    cement_company = data['cement']
+    sand_company = data['sand']
+    district = data['district']
 
-    # Materials
-    cement = int(area * floors * 0.3)
-    sand = int(area * floors * 0.5)
-    aggregate = int(area * floors * 0.8)
-    steel = int(area * floors * 0.4)
+    # --- Company price mapping ---
+    cement_prices = {
+        "UltraTech": 420,
+        "ACC": 400,
+        "Ramco": 380
+    }
 
-    # Workers
-    workers = max(3, int(area / 400))
-    days = max(10, int(area / 100))
+    sand_prices = {
+        "Premium": 1500,
+        "Standard": 1200,
+        "Local": 900
+    }
 
-    # Equipment
-    if area < 1000:
-        equipment = "Basic tools (manual work)"
-    elif area < 3000:
-        equipment = "Concrete mixer machine"
+    # --- District factor ---
+    district_factor = {
+        "Chennai": 1.2,
+        "Trichy": 1.0,
+        "Tanjore": 0.9,
+        "Coimbatore": 1.1
+    }
+
+    factor = district_factor[district]
+
+    # --- Quantity estimation ---
+    cement_qty = area * floors * 0.3
+    sand_qty = area * floors * 0.5
+
+    # --- Cost calculation ---
+    cement_cost = cement_qty * cement_prices[cement_company] * factor
+    sand_cost = sand_qty * sand_prices[sand_company] * factor
+
+    total_cost = int(cement_cost + sand_cost)
+
+    # --- Smart suggestion ---
+    suggestion = ""
+
+    if cement_company == "UltraTech":
+        suggestion += "High quality but expensive. "
+    if sand_company == "Premium":
+        suggestion += "Premium sand increases cost. "
+    if total_cost > 1000000:
+        suggestion += "Consider switching to cost-effective materials."
     else:
-        equipment = "Mixer + Excavator"
-
-    # Cost
-    if btype == "Residential":
-        cost = int(area * floors * 1500)
-    else:
-        cost = int(area * floors * 2500)
-
-    # Smart insight (UNIQUE BUT SIMPLE)
-    if area > 3000:
-        insight = "Large project: consider phased construction to manage cost."
-    elif floors > 2:
-        insight = "Multi-floor structure: ensure strong foundation planning."
-    else:
-        insight = "Standard construction: balanced cost and resources."
+        suggestion += "Good balance of cost and quality."
 
     return jsonify({
-        "cement": cement,
-        "sand": sand,
-        "aggregate": aggregate,
-        "steel": steel,
-        "workers": workers,
-        "days": days,
-        "equipment": equipment,
-        "cost": cost,
-        "insight": insight
+        "cement_qty": int(cement_qty),
+        "sand_qty": int(sand_qty),
+        "total_cost": total_cost,
+        "suggestion": suggestion
     })
 
 app.run(debug=True)
