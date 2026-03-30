@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Construction Calculator</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f7f9fc;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2>🏗️ Smart Construction Calculator</h2>
+</div>
+
+<div class="container">
+
+    <h3>Project Input</h3>
+
+    <input id="area" placeholder="Area (sq.ft)">
+    <input id="floors" placeholder="Number of Floors">
+
+    <select id="type">
+        <option>Residential</option>
+        <option>Commercial</option>
+    </select>
+
+    <button onclick="calculate()">Calculate Plan</button>
+
+    <div id="output"></div>
+
+</div>
+
+<script>
+function calculate() {
+    var area = document.getElementById("area").value;
+    var floors = document.getElementById("floors").value;
+    var type = document.getElementById("type").value;
+
+    fetch("http://127.0.0.1:5000/calc", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({area, floors, type})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("output").innerHTML = `
+        
+        <div class="section">
+        <h3>🧱 Materials</h3>
+        Cement: ${data.cement}<br>
+        Sand: ${data.sand}<br>
+        Aggregate: ${data.aggregate}<br>
+        Steel: ${data.steel}
+        </div>
+
+        <div class="section">
+        <h3>👷 Manpower</h3>
+        Total Workers: ${data.workers}<br>
+        Estimated Days: ${data.days}
+        </div>
+
+        <div class="section">
+        <h3>🚜 Equipment</h3>
+        ${data.equipment}
+        </div>
+
+        <div class="section">
+        <h3>💰 Cost Estimate</h3>
+        ₹${data.cost}
+        </div>
+
+        <div class="section">
+        <h3>⚡ Smart Insight</h3>
+        ${data.insight}
+        </div>
+        `;
+    });
+}
+</script>
+
+</body>
+</html>
