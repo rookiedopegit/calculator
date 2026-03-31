@@ -1,16 +1,82 @@
-# React + Vite
+## Project Concept
+BuildSmart Pro is a construction planning app designed for non-technical clients. It helps users:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Plan and calculate material requirements for projects like houses, pools, gardens, and rooftops.
+- Select companies for materials** (cement, steel, sand, aggregate, water) with district-specific pricing.
+- Optimize project costs automatically with a  cheapest company selection**.
+- Calculate total budget, manpower, and duration.
+- Get AI suggestions via a chatbot for material and cost optimization.
 
-Currently, two official plugins are available:
+💡 Goal: Empower clients to make informed construction decisions without needing an engineer.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+Technical Implementation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+-Frontend: React.js (JavaScript)
+  - Interactive UI with dropdowns, input fields, buttons, and result display.
+- Logic & Calculations:
+  - Calculates material quantities using area multipliers per project type.
+  - Computes total cost, individual material cost, manpower, and duration.
+  - Implements Optimize Cost** feature to automatically select cheapest companies per district.
+- Chatbot:
+  - Provides simple AI suggestions based on user input keywords.
+- Styling: Inline CSS + React components.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+
+-  Select **project type**: House, Pool, Garden, Rooftop
+-  Enter **area in m²**
+-  Choose **district**: Chennai, Trichy, Tanjore, Coimbatore
+- Select **company for each material** or use **Optimize Cost**
+- Click **Calculate** to view:
+  - Total budget
+  - Material-wise cost breakdown
+  - Estimated manpower
+  - Estimated duration
+- Chatbot for AI suggestions
+
+
+
+## How to Run Locally
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/buildsmart-pro.git
+cd buildsmart-pro
+````
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
+
+```bash
+npm run dev
+```
+
+4. Open the app in your browser:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Usage Instructions
+
+1. Select district
+2. Select project type
+3. Enter area in m²
+4. Choose companies for each material or click Optimize Cost
+5. Click Calculate to see total cost, material breakdown, manpower, and duration
+6. Usechatbot for suggestions
+
+---
+
